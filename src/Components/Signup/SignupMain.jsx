@@ -130,70 +130,70 @@ function SigninMain() {
   const navigate = useNavigate();
   const isLoggedIn = AuthService.isLoggedIn();
 
-  const [passwordOpen, SetPasswordOpen] = useState(false);
-  const [eyeIcon, SetEyeIcon] = useState(offEye);
-  const [hasEmail, SetHasEmail] = useState(null);
-  const [inputEmail, SetInputEmail] = useState(null);
-  const [emailCheck, SetEmailCheck] = useState(null);
-  const [emailEnable, SetEmailEnable] = useState(false);
-  const [hasPassword, SetHasPassword] = useState(null);
-  const [inputPassword, SetPasswordInput] = useState(null);
-  const [passwordCheck, SetPasswordCheck] = useState(null);
-  const [hasPasswordCheck, SetHasPasswordCheck] = useState(null);
-  const [inputPasswordCheck, SetInputPasswordCheck] = useState(null);
-  const [passwordCompare, SetPasswordCompare] = useState(null);
-  const [errMessage, SetErrorMessage] = useState("");
+  const [passwordOpen, setPasswordOpen] = useState(false);
+  const [eyeIcon, setEyeIcon] = useState(offEye);
+  const [hasEmail, setHasEmail] = useState(null);
+  const [inputEmail, setInputEmail] = useState(null);
+  const [emailCheck, setEmailCheck] = useState(null);
+  const [emailEnable, setEmailEnable] = useState(false);
+  const [hasPassword, setHasPassword] = useState(null);
+  const [inputPassword, setPasswordInput] = useState(null);
+  const [passwordCheck, setPasswordCheck] = useState(null);
+  const [hasPasswordCheck, setHasPasswordCheck] = useState(null);
+  const [inputPasswordCheck, setInputPasswordCheck] = useState(null);
+  const [passwordCompare, setPasswordCompare] = useState(null);
+  const [errMessage, setErrorMessage] = useState("");
 
   const passwordOpenHandle = () => {
-    SetPasswordOpen(!passwordOpen);
-    SetEyeIcon(passwordOpen ? offEye : openEye);
+    setPasswordOpen(!passwordOpen);
+    setEyeIcon(passwordOpen ? offEye : openEye);
   };
 
   const handleEmailCheck = async (e) => {
     const email = e.target.value;
-    SetPasswordCheck(null);
-    SetHasEmail(true);
-    SetErrorMessage("");
-    SetEmailEnable(false);
+    setPasswordCheck(null);
+    setHasEmail(true);
+    setErrorMessage("");
+    setEmailEnable(false);
     if (!email) {
-      SetHasEmail(false);
+      setHasEmail(false);
       return;
     }
-    SetInputEmail(email);
+    setInputEmail(email);
     const result = await postEmailCheck(email);
     if (result.error) {
-      SetErrorMessage(result.error.message);
+      setErrorMessage(result.error.message);
     }
     if (result.data) {
-      SetEmailEnable(true);
+      setEmailEnable(true);
     }
   };
   const handlePassword = async (e) => {
     const password = e.target.value;
-    SetHasPassword(true);
+    setHasPassword(true);
     if (!password) {
-      SetHasPassword(false);
+      setHasPassword(false);
       return;
     }
-    SetPasswordInput(password);
+    setPasswordInput(password);
   };
   const handlePasswordCheck = async (e) => {
     const passwordCheck = e.target.value;
-    SetPasswordCompare(true);
-    SetHasPasswordCheck(true);
+    setPasswordCompare(true);
+    setHasPasswordCheck(true);
     if (!passwordCheck) {
-      SetHasPasswordCheck(false);
+      setHasPasswordCheck(false);
       return;
     }
-    SetInputPasswordCheck(passwordCheck);
+    setInputPasswordCheck(passwordCheck);
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
     if ((emailEnable, passwordCompare)) {
       const loginSuccess = await postSignUp(inputEmail, inputPasswordCheck);
       if (loginSuccess) {
-        SetEmailCheck(true);
-        SetPasswordCheck(true);
+        setEmailCheck(true);
+        setPasswordCheck(true);
         window.location.href = "/folder";
       } else {
         return;
@@ -206,7 +206,7 @@ function SigninMain() {
       navigate("/folder");
     }
     if (inputPassword !== inputPasswordCheck) {
-      SetPasswordCompare(false);
+      setPasswordCompare(false);
       return;
     }
   }, [isLoggedIn, navigate, inputPassword, inputPasswordCheck]);
