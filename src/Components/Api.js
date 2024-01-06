@@ -1,4 +1,5 @@
-const BASE_URL = `https://bootcamp-api.codeit.kr/api`;
+import { BASE_URL } from "../static/BASE_URL";
+
 export async function getProfileData() {
   const response = await fetch(`${BASE_URL}/sample/user`);
   const result = await response.json();
