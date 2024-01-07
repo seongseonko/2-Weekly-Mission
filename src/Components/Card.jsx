@@ -25,11 +25,7 @@ function Card() {
   return (
     <div>
       <CardDataProvider value={cardData}>
-        {cardData ? (
-          <FolderCard linkData={cardData.data} />
-        ) : (
-          "저장된 데이터가 없습니다."
-        )}
+        {cardData && <FolderCard linkData={cardData.data} />}
       </CardDataProvider>
     </div>
   );

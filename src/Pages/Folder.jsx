@@ -17,7 +17,7 @@ function Folder() {
   const [selectedButtonTitle, setSelectedButtonTitle] = useState("");
   return (
     <>
-      <Nav $sticky="off" />
+      <Nav sticky="off" />
       <Main>
         <AddLink />
         <SearchBar />

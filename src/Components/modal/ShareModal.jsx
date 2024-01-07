@@ -125,6 +125,8 @@ function ShareModal({ setModalOpen }) {
       setModalOpen({});
     }
   };
+
+  //TODO 테스트 코드
   const userId = "kymgok1001";
   const currentFolderId = 1;
   const currentURL = window.location.href;
@@ -162,7 +164,7 @@ function ShareModal({ setModalOpen }) {
               <span>페이스북</span>
             </Links>
             <Links>
-              <StyledButton onClick={() => handleCopyClipBoard(shareURL)}>
+              <StyledButton onClick={() => handleCopyClipBoard(currentURL)}>
                 <img src={linkCopy} alt="링크복사" />
               </StyledButton>
               <span>링크복사</span>
