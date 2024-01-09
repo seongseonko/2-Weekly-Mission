@@ -11,8 +11,8 @@ const Footer = styled(BaseFooter)`
   color: var(--white);
   justify-content: space-between;
   padding: 3.2rem 10.4rem 6.4rem;
+  margin-top: 6rem;
   height: 16rem;
-  margin-top: 10rem;
   ${mediaQuery.mobile} {
     display: grid;
     grid-template-areas:
@@ -35,7 +35,7 @@ function BaseFooter({ className }) {
     <footer className={className}>
       <Codeit>©codeit - 2023</Codeit>
       <Faq>
-        <Link to="/privacy’" target="_blank">
+        <Link to="/privacy" target="_blank">
           <div>Privacy Policy</div>
         </Link>
         <Link to="/faq" target="_blank">

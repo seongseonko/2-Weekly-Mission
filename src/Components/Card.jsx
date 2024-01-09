@@ -1,8 +1,12 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { getCardData } from "./Api";
-import { FolderCard } from "./LinkCard";
-function Card({ selectedButtonId }) {
+import { FolderCard } from "./FolderCard";
+import ButtonIdContext from "./context/ButtonIdContext";
+import { CardDataProvider } from "./context/CardDataContext";
+
+function Card() {
   const [cardData, setCardData] = useState(null);
+  const { selectedButtonId } = useContext(ButtonIdContext);
 
   const dataLoad = async (selectedButtonId) => {
     try {
@@ -20,11 +24,9 @@ function Card({ selectedButtonId }) {
 
   return (
     <div>
-      {cardData ? (
-        <FolderCard linkData={cardData.data} />
-      ) : (
-        "저장된 데이터가 없습니다."
-      )}
+      <CardDataProvider value={cardData}>
+        {cardData && <FolderCard linkData={cardData.data} />}
+      </CardDataProvider>
     </div>
   );
 }

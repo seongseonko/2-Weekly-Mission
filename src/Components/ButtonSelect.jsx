@@ -1,16 +1,15 @@
 import styled from "styled-components";
 import mediaQuery from "../static/MediaQuery";
+import { useContext } from "react";
+import ButtonIdContext from "./context/ButtonIdContext";
 
 const ButtonSelected = styled.button`
   border-radius: 5px;
   border: 1px solid var(--Linkbrary-primary-color);
-  ${({ selectedButtonId, id }) => {
-    return selectedButtonId === id
-      ? `background: var(--Linkbrary-primary-color);
-  color: var(--white);`
-      : `background: var(--white);
-  color: var(--black);`;
-  }}
+  background: ${({ $selected, $id }) =>
+    $selected === $id ? "var(--Linkbrary-primary-color)" : "var(--white)"};
+  color: ${({ $selected, $id }) =>
+    $selected === $id ? "var(--white)" : "var(--black)"};
   padding: 8px 12px;
   font-size: 16px;
   font-weight: 400;
@@ -20,13 +19,9 @@ const ButtonSelected = styled.button`
   }
 `;
 
-function ButtonSelect({
-  id,
-  name,
-  setSelectedButtonId,
-  selectedButtonId,
-  setSelectedButtonTitle,
-}) {
+function ButtonSelect({ id, name }) {
+  const { setSelectedButtonId, selectedButtonId, setSelectedButtonTitle } =
+    useContext(ButtonIdContext);
   const handleButtonClick = () => {
     setSelectedButtonId(id);
     setSelectedButtonTitle(name);
@@ -35,8 +30,8 @@ function ButtonSelect({
   return (
     <ButtonSelected
       onClick={handleButtonClick}
-      selectedButtonId={selectedButtonId}
-      id={id}
+      $selected={selectedButtonId}
+      $id={id}
     >
       {name}
     </ButtonSelected>

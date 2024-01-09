@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { getButtonData } from "./Api";
 import AddFolder from "./AddFolder";
 import ButtonSelect from "./ButtonSelect";
 import styled from "styled-components";
 import mediaQuery from "../static/MediaQuery";
+import ButtonIdContext from "./context/ButtonIdContext";
 
 const ButtonsField = styled.div`
   margin: 0 auto;
@@ -29,8 +30,8 @@ const ButtonsContainer = styled.div`
 const Button = styled.button`
   border-radius: 5px;
   border: 1px solid var(--Linkbrary-primary-color);
-  ${({ selectedButtonId }) => {
-    return selectedButtonId === null
+  ${({ $selectedButtonId }) => {
+    return $selectedButtonId === null
       ? `background: var(--Linkbrary-primary-color);
   color: var(--white);`
       : `background: var(--white);
@@ -44,20 +45,10 @@ const Button = styled.button`
     font-size: 14px;
   }
 `;
-const NoneData = styled.div`
-  padding: 41px 15px 35px 16px;
-  color: var(--black);
-  text-align: center;
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 24px;
-`;
 
-function Buttons({
-  setSelectedButtonId,
-  selectedButtonId,
-  setSelectedButtonTitle,
-}) {
+function Buttons() {
+  const { setSelectedButtonId, setSelectedButtonTitle, selectedButtonId } =
+    useContext(ButtonIdContext);
   const [buttonData, setButtonData] = useState(null);
   const ButtonDataLoad = async () => {
     try {
@@ -72,35 +63,27 @@ function Buttons({
     setSelectedButtonId(null);
     setSelectedButtonTitle("");
   };
+
   useEffect(() => {
     ButtonDataLoad();
   }, []);
   return (
     <ButtonsField>
-      {buttonData && buttonData.data.length !== 0 ? (
+      {buttonData && buttonData.data.length !== 0 && (
         <>
           <ButtonsContainer>
             <Button
               onClick={handleSelectedId}
-              selectedButtonId={selectedButtonId}
+              $selectedButtonId={selectedButtonId}
             >
               전체
             </Button>
             {buttonData.data.map((data) => (
-              <ButtonSelect
-                key={data.id}
-                id={data.id}
-                name={data.name}
-                selectedButtonId={selectedButtonId}
-                setSelectedButtonId={setSelectedButtonId}
-                setSelectedButtonTitle={setSelectedButtonTitle}
-              />
+              <ButtonSelect key={data.id} id={data.id} name={data.name} />
             ))}
           </ButtonsContainer>
           <AddFolder />
         </>
-      ) : (
-        <NoneData>저장된 링크가 없습니다</NoneData>
       )}
     </ButtonsField>
   );

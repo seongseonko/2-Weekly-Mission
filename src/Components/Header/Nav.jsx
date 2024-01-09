@@ -9,8 +9,8 @@ import AuthService from "../Api/AuthService";
 
 const NavBar = styled.nav`
   background-color: var(--bg);
-  position: ${({ sticky }) => {
-    return sticky === "off" ? "static" : "sticky";
+  position: ${({ $sticky }) => {
+    return $sticky === "off" ? "static" : "sticky";
   }};
   top: 0;
   z-index: 1;
@@ -72,7 +72,7 @@ function Nav({ sticky }) {
   }, []);
 
   return (
-    <NavBar sticky={sticky}>
+    <NavBar $sticky={sticky}>
       <NavContainer>
         <Link to="/">
           <Logo src={linkbrary} alt="로고Linkbrary" />

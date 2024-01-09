@@ -118,16 +118,20 @@ const ContentTitleField = styled.div`
   font-family: Pretendard;
 `;
 const SpanAccent = styled.span`
-  background: ${({ children }) =>
-    children === "원하는 링크"
-      ? "linear-gradient(96deg, #fe8a8a 1.72%, #a4ceff 74.97%)"
-      : children === "관리"
-      ? "linear-gradient(277deg, #6fbaff 59.22%, #ffd88b 93.66%)"
-      : children === "공유"
-      ? "linear-gradient(99deg, #6D7CCD 19.76%, rgba(82, 136, 133, 0.22) 52.69%)"
-      : children === "검색"
-      ? "linear-gradient(271deg, #FE578F -9.84%, #68E8F9 107.18%)"
-      : null}; //자식요소 문자열에 따른 색상 변경
+  background: ${({ children }) => {
+    switch (children) {
+      case "원하는 링크":
+        return "linear-gradient(96deg, #fe8a8a 1.72%, #a4ceff 74.97%)";
+      case "관리":
+        return "linear-gradient(277deg, #6fbaff 59.22%, #ffd88b 93.66%)";
+      case "공유":
+        return "linear-gradient(99deg, #6D7CCD 19.76%, rgba(82, 136, 133, 0.22) 52.69%)";
+      case "검색":
+        return "linear-gradient(271deg, #484848 -9.84%, #68E8F9 107.18%)";
+      default:
+        return "linear-gradient(96deg, #fe8a8a 1.72%, #a4ceff 74.97%)";
+    }
+  }};
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

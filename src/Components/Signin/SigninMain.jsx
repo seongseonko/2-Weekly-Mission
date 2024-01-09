@@ -129,49 +129,49 @@ function SigninMain() {
   const navigate = useNavigate();
   const isLoggedIn = AuthService.isLoggedIn();
 
-  const [passwordOpen, SetPasswordOpen] = useState(false);
-  const [eyeIcon, SetEyeIcon] = useState(offEye);
-  const [hasEmail, SetHasEmail] = useState(null);
-  const [inputEmail, SetInputEmail] = useState(null);
-  const [emailCheck, SetEmailCheck] = useState(null);
-  const [hasPassword, SetHasPassword] = useState(null);
-  const [inputPassword, SetPasswordInput] = useState(null);
-  const [passwordCheck, SetPasswordCheck] = useState(null);
+  const [passwordOpen, setPasswordOpen] = useState(false);
+  const [eyeIcon, setEyeIcon] = useState(offEye);
+  const [hasEmail, setHasEmail] = useState(null);
+  const [inputEmail, setInputEmail] = useState(null);
+  const [emailCheck, setEmailCheck] = useState(null);
+  const [hasPassword, setHasPassword] = useState(null);
+  const [inputPassword, setPasswordInput] = useState(null);
+  const [passwordCheck, setPasswordCheck] = useState(null);
   const passwordOpenHandle = () => {
-    SetPasswordOpen(!passwordOpen);
-    SetEyeIcon(passwordOpen ? offEye : openEye);
+    setPasswordOpen(!passwordOpen);
+    setEyeIcon(passwordOpen ? offEye : openEye);
   };
 
   const handleEmailCheck = async (e) => {
     const email = e.target.value;
-    SetPasswordCheck(null);
-    SetHasEmail(true);
+    setPasswordCheck(null);
+    setHasEmail(true);
     if (!email) {
-      SetHasEmail(false);
+      setHasEmail(false);
       return;
     }
-    SetInputEmail(email);
+    setInputEmail(email);
   };
   const handlePasswordCheck = async (e) => {
     const password = e.target.value;
-    SetEmailCheck(null);
-    SetHasPassword(true);
+    setEmailCheck(null);
+    setHasPassword(true);
     if (!password) {
-      SetHasPassword(false);
+      setHasPassword(false);
       return;
     }
-    SetPasswordInput(password);
+    setPasswordInput(password);
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
     const loginSuccess = await postSignIn(inputEmail, inputPassword);
     if (loginSuccess) {
-      SetEmailCheck(true);
-      SetPasswordCheck(true);
+      setEmailCheck(true);
+      setPasswordCheck(true);
       window.location.href = "/folder";
     } else {
-      SetEmailCheck(false);
-      SetPasswordCheck(false);
+      setEmailCheck(false);
+      setPasswordCheck(false);
       return;
     }
   };

@@ -6,22 +6,34 @@ import SearchBar from "../Components/SearchBar";
 import Footer from "../Components/Footer/Footer";
 import { useState } from "react";
 import Nav from "../Components/Header/Nav";
+import styled from "styled-components";
+import { ButtonIdContextProvider } from "../Components/context/ButtonIdContext";
 
+const Main = styled.main`
+  min-height: calc(100vh - 16rem);
+`;
 function Folder() {
   const [selectedButtonId, setSelectedButtonId] = useState(null);
   const [selectedButtonTitle, setSelectedButtonTitle] = useState("");
   return (
     <>
       <Nav sticky="off" />
-      <AddLink />
-      <SearchBar />
-      <Buttons
-        setSelectedButtonId={setSelectedButtonId}
-        selectedButtonId={selectedButtonId}
-        setSelectedButtonTitle={setSelectedButtonTitle}
-      />
-      <ListEdit title={selectedButtonTitle} />
-      <Card selectedButtonId={selectedButtonId} />
+      <Main>
+        <AddLink />
+        <SearchBar />
+        <ButtonIdContextProvider
+          value={{
+            selectedButtonId,
+            setSelectedButtonId,
+            selectedButtonTitle,
+            setSelectedButtonTitle,
+          }}
+        >
+          <Buttons />
+          <ListEdit />
+          <Card />
+        </ButtonIdContextProvider>
+      </Main>
       <Footer />
     </>
   );
