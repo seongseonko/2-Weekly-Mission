@@ -1,12 +1,26 @@
 import link from "../images/link.svg";
 import styled from "styled-components";
 import mediaQuery from "../static/MediaQuery";
-import { FormEvent } from "react";
+import { FormEvent, Ref } from "react";
 
-const AddLinkContainer = styled.div`
+const FiexdContainer = styled.div`
+  height: 219px;
+  background-color: var(--bg);
+`;
+const AddLinkContainer = styled.div<{ $showAddLink: boolean }>`
+  ${({ $showAddLink }) =>
+    $showAddLink
+      ? `position: fixed;
+      z-index: 1;
+      bottom : 0;
+        `
+      : `position: static;`}
+
   margin: 0 auto;
-  background-color: var(--linkbrary-bg);
-  padding: 60px 320px 90px 320px;
+  background-color: var(--bg);
+  padding: 24px 320px;
+  width: 100%;
+
   ${mediaQuery.tablet} {
     padding: 60px 32px 90px 32px;
   }
@@ -17,7 +31,6 @@ const AddLinkContainer = styled.div`
 const AddLinkForm = styled.form`
   display: flex;
   justify-content: space-between;
-  width: 100%;
   border-radius: 15px;
   border: 1px solid var(--linkbrary-primary-color, #6d6afe);
   background: var(--linkbrary-white, #fff);
@@ -69,24 +82,32 @@ const AddLinkFormLabel = styled.label`
   }
 `;
 
-function AddLink() {
+function AddLink({
+  forwardRef,
+  showAddLink,
+}: {
+  forwardRef?: Ref<HTMLDivElement>;
+  showAddLink: boolean;
+}) {
   const handleSubmit = (e: FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
   };
   return (
-    <AddLinkContainer>
-      <AddLinkForm>
-        <AddLinkFormLabel>
-          <img src={link} alt="링크" />
-          <input
-            id="link"
-            className="AddLinkInput"
-            placeholder="링크를 추가해 보세요"
-          />
-        </AddLinkFormLabel>
-        <button onSubmit={handleSubmit}>추가하기</button>
-      </AddLinkForm>
-    </AddLinkContainer>
+    <FiexdContainer>
+      <AddLinkContainer ref={forwardRef} $showAddLink={showAddLink}>
+        <AddLinkForm>
+          <AddLinkFormLabel>
+            <img src={link} alt="링크" />
+            <input
+              id="link"
+              className="AddLinkInput"
+              placeholder="링크를 추가해 보세요"
+            />
+          </AddLinkFormLabel>
+          <button onSubmit={handleSubmit}>추가하기</button>
+        </AddLinkForm>
+      </AddLinkContainer>
+    </FiexdContainer>
   );
 }
 export default AddLink;

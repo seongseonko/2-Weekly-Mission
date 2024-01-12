@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Ref, useEffect, useState } from "react";
 import linkbrary from "../../images/linkbrary.svg";
 import { getProfileData } from "../Api";
 import { ProfileEmail } from "../Profile";
@@ -58,9 +58,10 @@ const Button = styled.button`
 
 interface NavProps {
   sticky?: string;
+  forwardRef?: Ref<HTMLDivElement>;
 }
 
-function Nav({ sticky }: NavProps) {
+function Nav({ sticky, forwardRef }: NavProps) {
   const [userData, setUserData] = useState(null);
   const dataLoad = async () => {
     let result;
@@ -80,7 +81,7 @@ function Nav({ sticky }: NavProps) {
   }, []);
 
   return (
-    <NavBar $sticky={sticky}>
+    <NavBar $sticky={sticky} ref={forwardRef}>
       <NavContainer>
         <Link to="/">
           <Logo src={linkbrary} alt="로고Linkbrary" />

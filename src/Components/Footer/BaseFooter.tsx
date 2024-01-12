@@ -1,3 +1,4 @@
+import { Ref } from "react";
 import FooterLink from "../FooterLink";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -13,11 +14,12 @@ const Faq = styled.div`
 `;
 interface BaseFooterProps {
   className?: string;
+  forwardRef?: Ref<HTMLDivElement>;
 }
 
-function BaseFooter({ className }: BaseFooterProps) {
+function BaseFooter({ className, forwardRef }: BaseFooterProps) {
   return (
-    <footer className={className}>
+    <footer className={className} ref={forwardRef}>
       <Codeit>©codeit - 2023</Codeit>
       <Faq>
         <Link to="/privacy" target="_blank">

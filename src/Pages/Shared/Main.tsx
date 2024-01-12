@@ -3,14 +3,18 @@ import { getFolderData } from "../../Components/Api";
 import { LinkCard } from "../../Components/LinkCard";
 import { Profile } from "../../Components/Profile";
 import SearchBar from "../../Components/SearchBar";
-import { SampleFolderData, SampleLinkData } from "./type";
+import { CardData, SampleFolderData, SampleLinkData } from "./type";
 
 function Main() {
   const [folderData, setFolderData] = useState<SampleFolderData>();
-
+  const [linkData, setLinkData] = useState<{ data: CardData[] }>({
+    data: [],
+  });
+  const [searchedData, setSearchedData] = useState<CardData[]>([]);
   const dataLoad = async () => {
     try {
       let result = await getFolderData();
+      console.log(result);
       const sortedItem = {
         ...result.folder,
         links: result.folder.links.sort(
@@ -19,8 +23,12 @@ function Main() {
         ),
       };
       setFolderData(sortedItem);
-    } catch (error: any) {
-      console.error(error.message);
+      const folderData = {
+        data: [...sortedItem.links],
+      };
+      setLinkData(folderData);
+    } catch (error) {
+      throw Error(``);
     }
   };
 
@@ -31,8 +39,8 @@ function Main() {
   return (
     <main>
       <div>{folderData && <Profile folderData={folderData} />}</div>
-      <SearchBar />
-      {folderData && <LinkCard linkData={folderData} />}
+      <SearchBar linkData={linkData} setSearchedData={setSearchedData} />
+      {folderData && <LinkCard linkData={searchedData} />}
     </main>
   );
 }

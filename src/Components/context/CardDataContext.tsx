@@ -1,30 +1,16 @@
 import { ReactNode, createContext } from "react";
+import { CardData } from "../../Pages/Shared/type";
 
 interface Link {
   count: number;
 }
 
-interface WebLink {
-  id: number;
-  created_at: string;
-  updated_at: string | null;
-  url: string;
-  title: string | null;
-  description: string | null;
-  image_source: string | null;
-  folder_id: number | null;
-}
-
-interface WebLinkData {
-  data: WebLink[];
-}
-
 interface CardDataProviderProps {
   children: ReactNode;
-  value: WebLinkData;
+  value: CardData[];
 }
 
-export const CardDataContext = createContext<WebLinkData | null>(null);
+export const CardDataContext = createContext<CardData[] | null>(null);
 
 export const CardDataProvider = ({
   children,

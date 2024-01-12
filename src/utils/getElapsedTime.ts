@@ -1,6 +1,9 @@
 import TIME_MILISECONDS from "../static/TIME_MILISECONDS";
 
-const getElapsedTime = ({ createdAt }: { createdAt: string }) => {
+const getElapsedTime = ({ createdAt }: { createdAt?: string }): string => {
+  if (createdAt === undefined) {
+    return "Unknown time";
+  }
   const now = new Date();
   const elapsedTime = now.getTime() - new Date(createdAt).getTime();
   const { minute, hour, day, month, year } = TIME_MILISECONDS;

@@ -10,7 +10,7 @@ import getElapsedTime from "../utils/getElapsedTime";
 import formatDate from "../utils/formatDate";
 import LinkDeleteModal from "./modal/LinkDeleteModal";
 import LinkAddModal from "./modal/LinkAddModal";
-import { SampleLinkData } from "../Pages/Shared/type";
+import { CardData } from "../Pages/Shared/type";
 
 const Card = styled.div`
   display: grid;
@@ -166,7 +166,7 @@ const Bookmark = styled.img`
 `;
 
 interface Props {
-  links: SampleLinkData[];
+  links: CardData[];
 }
 interface ModalState {
   isOpen: boolean;

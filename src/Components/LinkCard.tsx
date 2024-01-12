@@ -1,14 +1,8 @@
+import { CardData } from "../Pages/Shared/type";
 import { LinksComponent } from "./LinksComponent";
-import { SampleFolderData, SampleLinkData } from "../Pages/Shared/type";
 
-interface Props {
-  linkData: SampleFolderData;
-}
-
-function LinkCard({ linkData }: Props) {
-  console.log(linkData);
-  const { links }: { links: SampleLinkData[] } = linkData;
-  return <LinksComponent links={links} />;
+function LinkCard({ linkData }: { linkData: CardData[] }) {
+  return <LinksComponent links={linkData} />;
 }
 
 export { LinkCard };

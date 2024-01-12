@@ -1,8 +1,9 @@
 import BaseFooter from "./BaseFooter";
 import styled from "styled-components";
 import mediaQuery from "../../static/MediaQuery";
+import { Ref } from "react";
 
-const Footer = styled(BaseFooter)`
+const Footer = styled(BaseFooter)<{ forwardRef?: Ref<HTMLDivElement> }>`
   display: flex;
   background-color: var(--black);
   font-size: 1.6rem;

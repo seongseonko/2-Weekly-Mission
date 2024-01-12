@@ -19,12 +19,14 @@ export type SampleFolderData = {
   links: SampleLinkData[];
 };
 export type CardData = {
+  created_at?: string;
+  description: string | null;
+  folder_id: number | null;
   id: number;
-  created_at: string;
+  image_source?: string | null;
+  title: string | null;
   updated_at: string | null;
   url: string;
-  title: string | null;
-  description: string | null;
-  image_source: string | null;
-  folder_id: number;
+  createdAt?: string;
+  imageSource?: string | null;
 };

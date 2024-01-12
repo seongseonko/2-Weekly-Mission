@@ -1,11 +1,22 @@
-import { useContext, useEffect, useState } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { getCardData } from "./Api";
 import { FolderCard } from "./FolderCard";
 import ButtonIdContext from "./context/ButtonIdContext";
 import { CardDataProvider } from "./context/CardDataContext";
 import { CardData } from "../Pages/Shared/type";
 
-function Card() {
+interface Props {
+  setLinkData: Dispatch<SetStateAction<{ data: CardData[] }>>;
+  searchedData: CardData[];
+}
+
+function Card({ setLinkData, searchedData }: Props) {
   const [cardData, setCardData] = useState<{ data: CardData[] }>({
     data: [],
   });
@@ -16,6 +27,10 @@ function Card() {
     try {
       const result = await getCardData(id);
       setCardData(result);
+      const sortedItem = {
+        ...result.data,
+      };
+      setLinkData(result);
     } catch (error: any) {
       console.error(error.message);
     }
@@ -27,7 +42,7 @@ function Card() {
 
   return (
     <div>
-      <CardDataProvider value={cardData}>
+      <CardDataProvider value={searchedData}>
         {cardData && <FolderCard />}
       </CardDataProvider>
     </div>

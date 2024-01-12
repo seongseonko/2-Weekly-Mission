@@ -19,13 +19,13 @@ const NoneData = styled.div`
 `;
 
 export function FolderCard() {
-  const linkData = useContext(CardDataContext);
+  const data = useContext(CardDataContext);
 
-  if (!linkData || !linkData.data) {
+  if (!data) {
     return <NoneData>저장된 데이터가 없습니다.</NoneData>;
   }
 
-  const transformedData = linkData.data.map((item) => {
+  const transformedData = data.map((item) => {
     const { created_at, image_source, ...rest } = item;
     return {
       ...rest,
