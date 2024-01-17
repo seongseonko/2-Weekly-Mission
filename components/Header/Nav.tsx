@@ -1,0 +1,104 @@
+import React, { Ref, useEffect, useState } from "react";
+import linkbrary from "@/public/linkbrary.svg";
+import { getProfileData } from "../Api/userApi";
+import { ProfileEmail } from "../Profile";
+import styled from "styled-components";
+import mediaQuery from "@/lib/MediaQuery";
+import AuthService from "../Api/AuthService";
+import Link from "next/link";
+import Image from "next/image";
+import { UserData } from "@/type/type";
+
+interface NavBarProps {
+  $sticky?: string;
+}
+
+const NavBar = styled.nav<NavBarProps>`
+  background-color: var(--bg);
+  position: ${({ $sticky }) => {
+    return $sticky === "off" ? "static" : "sticky";
+  }};
+  top: 0;
+  z-index: 1;
+`;
+const NavContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 3.3rem 20rem 3.2rem;
+  ${mediaQuery.mobile} {
+    padding: 1.8rem 3.2rem 1.7rem;
+  }
+`;
+const Logo = styled.img`
+  width: 13.3rem;
+  height: 2.4rem;
+  ${mediaQuery.mobile} {
+    width: 8.8667rem;
+    width: 8.8667rem;
+  }
+`;
+const Button = styled.button`
+  display: flex;
+  width: 12.8rem;
+  padding: 1.6rem 2rem;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  border-radius: 0.8rem;
+  background: var(
+    --gra-purpleblue-to-skyblue,
+    linear-gradient(91deg, #6d6afe 0.12%, #6ae3fe 101.84%)
+  );
+  color: var(--Grey-Light);
+  font-family: Pretendard;
+  font-size: 1.8rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+`;
+
+interface NavProps {
+  sticky?: string;
+  forwardRef?: Ref<HTMLDivElement>;
+}
+
+function Nav({ sticky, forwardRef }: NavProps) {
+  const [userData, setUserData] = useState<null | UserData>(null);
+  const dataLoad = async () => {
+    let result;
+    try {
+      setUserData(null);
+      result = await getProfileData();
+      setUserData(result);
+    } catch (error: any) {
+      console.error(error.message);
+    }
+  };
+
+  useEffect(() => {
+    if (AuthService.isLoggedIn()) {
+      dataLoad();
+    }
+  }, []);
+
+  return (
+    <NavBar $sticky={sticky} ref={forwardRef}>
+      <NavContainer>
+        <Link href="/">
+          <Image src={linkbrary} alt="로고Linkbrary" priority={true} />
+        </Link>
+        <div>
+          {userData ? (
+            <ProfileEmail userData={userData} />
+          ) : (
+            <Link href="/signin">
+              <Button>로그인</Button>
+            </Link>
+          )}
+        </div>
+      </NavContainer>
+    </NavBar>
+  );
+}
+export default Nav;
