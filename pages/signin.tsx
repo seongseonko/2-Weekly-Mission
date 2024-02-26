@@ -1,17 +1,21 @@
 import styled from "styled-components";
 import Logo from "@/public/head_logo.svg";
-import StyledInput from "@/components/Sign/StyledInput";
 import StyledButton from "@/components/Sign/StyledButton";
-import offEye from "@/public/eye_off.svg";
-import openEye from "@/public/eye-on.svg";
 import kakao from "@/public/kakao.png";
 import google from "@/public/google.png";
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { useEffect } from "react";
 import { postSignIn } from "@/components/Api/Api";
 import AuthService from "@/components/Api/AuthService";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Image from "next/image";
+import {
+  FieldValues,
+  SubmitHandler,
+  UseFormSetError,
+  useFormContext,
+} from "react-hook-form";
+import InputField from "@/components/Common/InputField";
 
 const Article = styled.article`
   display: flex;
@@ -46,38 +50,7 @@ const SignupLinkField = styled.div`
     line-height: normal;
   }
 `;
-const InputFiled = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
-  color: var(--black);
-  font-family: Pretendard;
-  font-size: 1.6rem;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 2.4rem;
-  div {
-    position: relative;
-  }
-  img {
-    position: absolute;
-    width: 1.6rem;
-    height: 1.6rem;
-    right: 1.5rem;
-    bottom: 2.15rem;
-    &:hover {
-      cursor: pointer;
-    }
-  }
-  span {
-    color: var(--Linkbrary-red, #ff5b56);
-    font-family: Pretendard;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-  }
-`;
+
 const InputFiledForm = styled.form`
   display: flex;
   flex-direction: column;
@@ -89,8 +62,6 @@ const StyledLink = styled(Link)`
   font-weight: 600;
   line-height: normal;
 `;
-const EmailInput = styled(StyledInput)``;
-const PasswordInput = styled(StyledInput)``;
 const SocialField = styled.div`
   display: flex;
   width: 40rem;
@@ -127,60 +98,11 @@ const SocialLink = styled(Link)`
 export default function Signin() {
   const router = useRouter();
   const isLoggedIn = AuthService.isLoggedIn();
+  const { handleSubmit, setError } = useFormContext();
+  const onSubmit: SubmitHandler<FieldValues> = (value: FieldValues) => {
+    postSignIn(value, setError as UseFormSetError<FieldValues>);
+  };
 
-  const [inputEmail, setInputEmail] = useState<string | null>(null);
-  const [inputPassword, setPasswordInput] = useState<string | null>(null);
-  const [passwordOpen, setPasswordOpen] = useState(false);
-  const [emailEnable, setEmailEnable] = useState<{
-    hasEmail: boolean | null;
-    emailCheck: boolean | null;
-  }>({
-    hasEmail: null,
-    emailCheck: null,
-  });
-  const [passwordEnable, setPasswordEnable] = useState<{
-    hasPassword: boolean | null;
-    passwordCheck: boolean | null;
-  }>({
-    hasPassword: null,
-    passwordCheck: null,
-  });
-  const passwordOpenHandle = () => setPasswordOpen((prev) => !prev);
-
-  const handleEmailCheck = async (e: ChangeEvent<HTMLInputElement>) => {
-    const email = e.target.value;
-    setPasswordEnable({ hasPassword: null, passwordCheck: null });
-    setEmailEnable({ hasEmail: true, emailCheck: null });
-    if (!email) {
-      setEmailEnable({ hasEmail: false, emailCheck: null });
-      return;
-    }
-    setInputEmail(email);
-  };
-  const handlePasswordCheck = async (e: ChangeEvent<HTMLInputElement>) => {
-    const password = e.target.value;
-    setEmailEnable({ hasEmail: null, emailCheck: null });
-    setPasswordEnable({ hasPassword: true, passwordCheck: null });
-    if (!password) {
-      setPasswordEnable({ hasPassword: false, passwordCheck: null });
-      return;
-    }
-    setPasswordInput(password);
-  };
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-      const loginSuccess = await postSignIn(inputEmail, inputPassword);
-      if (loginSuccess) {
-        setEmailEnable((prev) => ({ ...prev, emailCheck: true }));
-        setPasswordEnable((prev) => ({ ...prev, passwordCheck: true }));
-        router.push("/folder");
-      }
-    } catch (e) {
-      setEmailEnable((prev) => ({ ...prev, emailCheck: false }));
-      setPasswordEnable((prev) => ({ ...prev, passwordCheck: false }));
-    }
-  };
   useEffect(() => {
     if (isLoggedIn) {
       router.push("/folder");
@@ -196,54 +118,26 @@ export default function Signin() {
           </Link>
           <div>
             <span>회원이 아니신가요? </span>
-            <StyledLink href="/Signup">회원 가입하기</StyledLink>
+            <StyledLink href="/signup">회원 가입하기</StyledLink>
           </div>
         </SignupLinkField>
-        <InputFiledForm onSubmit={handleSubmit}>
-          <InputFiled>
-            이메일
-            <EmailInput
-              type="email"
-              name="email"
-              placeholder="codeit@codeit.com"
-              onBlur={handleEmailCheck}
-              onChange={handleEmailCheck}
-              $Enable={emailEnable.hasEmail}
-            />
-            {emailEnable.hasEmail === false && (
-              <span>이메일을 입력하세요.</span>
-            )}
-            {emailEnable.emailCheck === false && (
-              <span>이메일을 확인해 주세요.</span>
-            )}
-          </InputFiled>
-          <InputFiled>
-            비밀번호
-            <div>
-              <PasswordInput
-                type={`${passwordOpen ? `text` : `password`}`}
-                name="password"
-                placeholder="1231231"
-                onBlur={handlePasswordCheck}
-                onChange={handlePasswordCheck}
-                $Enable={passwordEnable.hasPassword}
-              />
-              <Image
-                src={passwordOpen ? openEye : offEye}
-                onClick={passwordOpenHandle}
-                alt="감은눈"
-                width={16}
-                height={16}
-              />
-            </div>
-            {passwordEnable.hasPassword === false && (
-              <span>비밀번호를 입력하세요.</span>
-            )}
-            {passwordEnable.passwordCheck === false &&
-              passwordEnable.hasPassword !== false && (
-                <span>비밀번호를 확인해 주세요.</span>
-              )}
-          </InputFiled>
+        <InputFiledForm onSubmit={handleSubmit(onSubmit)}>
+          <InputField
+            label="이메일"
+            name="email"
+            type="email"
+            placeholder="example@example.com"
+            defaultValue=""
+            maxLength={30}
+          />
+          <InputField
+            label="비밀번호"
+            name="password"
+            type="password"
+            placeholder="********"
+            defaultValue=""
+            maxLength={15}
+          />
           <StyledButton type="submit">로그인</StyledButton>
         </InputFiledForm>
       </LoginField>

@@ -1,4 +1,5 @@
 import type { AppProps } from "next/app";
+import { FormProvider, useForm } from "react-hook-form";
 import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
@@ -47,10 +48,13 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 export default function App({ Component, pageProps }: AppProps) {
+  const methods = useForm({ mode: "onBlur" });
   return (
     <>
       <GlobalStyle />
-      <Component {...pageProps} />;
+      <FormProvider {...methods}>
+        <Component {...pageProps} />;
+      </FormProvider>
     </>
   );
 }

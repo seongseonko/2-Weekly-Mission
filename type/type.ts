@@ -36,3 +36,9 @@ export type CardData = {
   createdAt?: string;
   imageSource?: string | null;
 };
+
+export type FormValues = {
+  email: string;
+  password: string;
+  passwordConfirm?: string;
+};

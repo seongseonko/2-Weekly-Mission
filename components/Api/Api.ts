@@ -1,5 +1,19 @@
+import { USER_INPUT_VALIDATION } from "@/lib/USER_INPUT_VALIDATION";
 import axios from "@/lib/axios";
+import { FieldValues, UseFormSetError } from "react-hook-form";
+import Router from "next/router";
+
 const BASE_URL = "https://bootcamp-api.codeit.kr";
+
+const replaceTo = (path: string) => {
+  Router.replace(path);
+};
+
+const redirectTo = (path: string) => {
+  Router.push(path);
+};
+
+const { email, password } = USER_INPUT_VALIDATION;
 
 export async function postEmailCheck(email: string) {
   try {
@@ -19,10 +33,11 @@ export async function postEmailCheck(email: string) {
   }
 }
 export async function postSignIn(
-  email: string | null,
-  password: string | null
+  data: FieldValues,
+  setError: UseFormSetError<FieldValues>
 ) {
   try {
+    const { email, password } = data;
     const response = await axios.post(
       `/sign-in`,
       { email, password },
@@ -37,18 +52,21 @@ export async function postSignIn(
       const accessToken = result.data?.accessToken;
       if (accessToken) {
         localStorage.setItem("accessToken", accessToken);
+        replaceTo("/shared");
       }
-      return result;
+      return;
     }
   } catch (e) {
-    throw e;
+    setError("email", { message: email.errorMessage.check });
+    setError("password", { message: password.errorMessage.check });
   }
 }
 
 export async function postSignUp(
-  email: string | null,
-  password: string | null
+  data: FieldValues,
+  setError: UseFormSetError<FieldValues>
 ) {
+  const { email, password } = data;
   try {
     const response = await axios.post(
       `/sign-up`,
@@ -65,11 +83,16 @@ export async function postSignUp(
       const accessToken = result.data?.accessToken;
       if (accessToken) {
         localStorage.setItem("accessToken", accessToken);
+        redirectTo("/signin");
       }
-      return result;
+
+      return;
     }
-  } catch (e) {
-    console.error(e);
-    throw e;
+  } catch (e: any) {
+    if (e.response.status === 400) {
+      setError("email", {
+        message: USER_INPUT_VALIDATION.email.errorMessage.confirm,
+      });
+    }
   }
 }
