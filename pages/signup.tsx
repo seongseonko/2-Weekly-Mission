@@ -12,6 +12,11 @@ import Image from "next/image";
 import { FieldValues, SubmitHandler, useFormContext } from "react-hook-form";
 import InputField from "@/components/Common/InputField";
 
+const Main = styled.main`
+  background: var(--bg);
+  height: 100vh;
+`;
+
 const Article = styled.article`
   display: flex;
   flex-direction: column;
@@ -46,7 +51,7 @@ const SignupLinkField = styled.div`
   }
 `;
 
-const InputFiledForm = styled.form`
+const InputFieldForm = styled.form`
   display: flex;
   flex-direction: column;
   gap: 2.4rem;
@@ -105,56 +110,58 @@ export default function SignUp() {
   }, [isLoggedIn, router]);
 
   return (
-    <Article>
-      <LoginField>
-        <SignupLinkField>
-          <Link href="/">
-            <Image src={Logo} width={210.583} height={38} alt="logo" />
-          </Link>
-          <div>
-            <span>이미 회원이신가요?</span>
-            <StyledLink href="/signin">로그인 하기</StyledLink>
-          </div>
-        </SignupLinkField>
-        <InputFiledForm onSubmit={handleSubmit(onSubmit)}>
-          <InputField
-            label="이메일"
-            name="email"
-            type="email"
-            placeholder="example@example.com"
-            maxLength={30}
-            defaultValue=""
-          />
-          <InputField
-            label="비밀번호"
-            name="password"
-            type="password"
-            placeholder="********"
-            maxLength={15}
-            defaultValue=""
-          />
-          <InputField
-            label="비밀번호 확인"
-            name="passwordConfirm"
-            type="password"
-            placeholder="********"
-            maxLength={15}
-            defaultValue=""
-          />
-          <StyledButton type="submit">로그인</StyledButton>
-        </InputFiledForm>
-      </LoginField>
-      <SocialField>
-        <span>소셜로그인</span>
-        <SocialLinkField>
-          <SocialLink href="https://google.com" target="_blank">
-            <Image src={google} alt="구글 로고" />
-          </SocialLink>
-          <SocialLink href="https://www.kakaocorp.com/page" target="_blank">
-            <Image src={kakao} alt="카톡 로고" />
-          </SocialLink>
-        </SocialLinkField>
-      </SocialField>
-    </Article>
+    <Main>
+      <Article>
+        <LoginField>
+          <SignupLinkField>
+            <Link href="/">
+              <Image src={Logo} width={210.583} height={38} alt="logo" />
+            </Link>
+            <div>
+              <span>이미 회원이신가요?</span>
+              <StyledLink href="/signin">로그인 하기</StyledLink>
+            </div>
+          </SignupLinkField>
+          <InputFieldForm onSubmit={handleSubmit(onSubmit)}>
+            <InputField
+              label="이메일"
+              name="email"
+              type="email"
+              placeholder="example@example.com"
+              maxLength={30}
+              defaultValue=""
+            />
+            <InputField
+              label="비밀번호"
+              name="password"
+              type="password"
+              placeholder="********"
+              maxLength={15}
+              defaultValue=""
+            />
+            <InputField
+              label="비밀번호 확인"
+              name="passwordConfirm"
+              type="password"
+              placeholder="********"
+              maxLength={15}
+              defaultValue=""
+            />
+            <StyledButton type="submit">로그인</StyledButton>
+          </InputFieldForm>
+        </LoginField>
+        <SocialField>
+          <span>소셜로그인</span>
+          <SocialLinkField>
+            <SocialLink href="https://google.com" target="_blank">
+              <Image src={google} alt="구글 로고" />
+            </SocialLink>
+            <SocialLink href="https://www.kakaocorp.com/page" target="_blank">
+              <Image src={kakao} alt="카톡 로고" />
+            </SocialLink>
+          </SocialLinkField>
+        </SocialField>
+      </Article>
+    </Main>
   );
 }

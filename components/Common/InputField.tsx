@@ -5,6 +5,25 @@ import Image from "next/image";
 import openEye from "@/public/eye-on.svg";
 import closeEye from "@/public/eye_off.svg";
 import useToggle from "@/hook/useToggle";
+import { ReactNode } from "react";
+
+type InputFieldProps = {
+  name: string;
+  type: string;
+  label: string;
+  placeholder?: string;
+  defaultValue?: string;
+  maxLength?: number;
+};
+
+type InputProps = {
+  $isError: boolean;
+};
+interface PasswordShow {
+  src: string;
+  show: string;
+  alt: string;
+}
 
 const Label = styled.label`
   position: relative;
@@ -15,7 +34,7 @@ const Label = styled.label`
   gap: 1.2rem;
 `;
 
-const Input = styled.input`
+const Input = styled.input<InputProps>`
   position: relative;
   width: 100%;
   height: 6rem;
@@ -23,7 +42,7 @@ const Input = styled.input`
   outline: none;
   border-radius: 1rem;
   border: 1px solid
-    ${({ isError }) => (isError ? "var(--red)" : "var(--gray20)")};
+    ${({ $isError }) => ($isError ? "var(--red)" : "var(--gray20)")};
 
   &:focus {
     border: 1px solid var(--primary-color);
@@ -46,7 +65,10 @@ const PasswordOpenButton = styled.button`
   background-color: var(--white);
 `;
 
-const PASSWORD_SHOW = {
+const PASSWORD_SHOW: {
+  open: PasswordShow;
+  close: PasswordShow;
+} = {
   open: {
     src: openEye,
     show: "text",
@@ -59,7 +81,7 @@ const PASSWORD_SHOW = {
   },
 };
 
-const InputField = ({ name, type, label, ...props }) => {
+const InputField = ({ name, type, label, ...props }: InputFieldProps) => {
   const {
     register,
     formState: { errors },
@@ -80,20 +102,26 @@ const InputField = ({ name, type, label, ...props }) => {
             required: errorMessage?.empty,
             pattern: {
               value: regex,
-              message: errorMessage.invalid,
+              message: errorMessage?.invalid || "",
             },
-            minLength: name === "password" && {
-              value: 8,
-              message: "비밀번호는 8자 이상 영문 + 숫자로 입력해 주세요",
-            },
-            validate: name === "passwordConfirm" && {
-              notMatch: (value) => {
-                const { password } = getValues();
-                return password === value || errorMessage.confirm;
-              },
-            },
+            minLength:
+              name === "password"
+                ? {
+                    value: 8,
+                    message: "비밀번호는 8자 이상 영문 + 숫자로 입력해 주세요",
+                  }
+                : undefined,
+            validate:
+              name === "passwordConfirm"
+                ? {
+                    notMatch: (value) => {
+                      const { password } = getValues();
+                      return password === value || errorMessage.confirm;
+                    },
+                  }
+                : undefined,
           })}
-          isError={isError}
+          $isError={isError}
           {...props}
           type={type === "password" ? show : type}
         />
@@ -103,7 +131,9 @@ const InputField = ({ name, type, label, ...props }) => {
           </PasswordOpenButton>
         )}
       </Label>
-      {errors && <ErrorMessage>{errors[name]?.message}</ErrorMessage>}
+      {errors && (
+        <ErrorMessage>{errors[name]?.message as ReactNode}</ErrorMessage>
+      )}
     </div>
   );
 };

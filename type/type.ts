@@ -42,3 +42,15 @@ export type FormValues = {
   password: string;
   passwordConfirm?: string;
 };
+
+export interface UserInputValidation {
+  [key: string]: {
+    regex: RegExp;
+    errorMessage: {
+      empty?: string;
+      invalid?: string;
+      confirm?: string;
+      check?: string;
+    };
+  };
+}

@@ -1,4 +1,6 @@
-export const USER_INPUT_VALIDATION = {
+import { UserInputValidation } from "@/type/type";
+
+export const USER_INPUT_VALIDATION: UserInputValidation = {
   email: {
     regex: /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/,
     errorMessage: {
@@ -17,6 +19,7 @@ export const USER_INPUT_VALIDATION = {
     },
   },
   passwordConfirm: {
+    regex: /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,15}$/,
     errorMessage: {
       confirm: "입력한 비밀번호가 일치하지 않습니다.",
     },
